@@ -1,0 +1,17 @@
+R1002 Not general tab is enabled
+R1003 Can't fill information before new button click in general tab
+R1002.1 Save disabled after save click and after open click
+R1004.1 No proposal for saving current database before creating new
+R1005.1 Do not implemented
+R1005.2 Conflict with R1002.1
+R200.2 Calculated when filled first name.
+R4002 Where is the name of the 3rd column? Table has 1 empty row.
+R4003 No many children. No scroll.
+R4004.1 Delete enable all time.
+R4004.2 Add disable when delete all children from table.
+R4005.1 Appear when cick new button.
+R4006 What with coding?
+BR1001 Wrong date format
+BR1002 No limit
+BR1003 No limit
+BR1004 Numerical. No max value. No measure in the form.
