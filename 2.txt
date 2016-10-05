@@ -1,0 +1,92 @@
+1.
+    - A lot of OS are experimental and do not used almost at all
+    - There are a lot of old versions of OS (Windows 95). Engineers had to port
+        a lot of libraries on it before developing. Application can use functions
+        which does not support by these OSs.
+
+2.
+    - Bad logic of saving data because a lot of similar informations will be
+        in one file and a lot of such files will be generated for database.
+    - We can save empty fields when
+        1) We limit maximal size of field
+        2) We save size of field before the data
+
+3.
+    - Data access problems appear when at least 2 applications try to read (write)
+        data from 1 file
+    - When one application will read data and then data will be changed by other,
+        problems with data reliability would appear.
+
+4.
+    - Info must be about husband, wife and children.
+    - Family can contain only 1 child no less or more.
+
+4.1.
+    - We can create 2 husbands and 2 wives and not less than 1 child.
+
+5.
+    - The same new button?
+
+6.
+    - What open button?
+    - What is the dialog form?
+
+6.1.
+    - Changes? If new changes are not exists.
+
+7.
+7.1
+    - When and where user should see the name of database
+7.2
+    - Why disabled? Rewrite it.
+7.3
+    - Should ask for file rewriting.
+
+8.
+    - May be options for language?
+
+9.
+    - What about open?
+
+10.
+10.1
+    - BR3?!
+
+10.2
+    - All users with the same age?
+
+11.
+    - What is full information?
+
+12.
+
+13.
+13.1
+    - If age changed?
+    - If mistype with date or name.
+
+14.
+15.
+16.
+16.1
+    - Should be disabled when noone is chose.
+
+17.
+    - BR3
+
+18.
+    - What message and where buttons.
+    - Edit something depends on delete button?
+
+19.
+    - Without choose who must be edited?
+
+BR1
+    - What is date format?
+
+BR2
+    - Alpha and other? What is other?
+
+BR4
+    - Calculator? Does it need calculator?
+    - Alphanumerical?
