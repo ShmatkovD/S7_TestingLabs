@@ -4,33 +4,16 @@ import hashlib
 from random import randint
 
 
-def module_pow(x, y, m):
-    """Calculate x^y (mod m)
-    :type x: int
-    :type y: int
-    :type m: int
-    :rtype: int
-    """
-    if y == 0:
-        return 1
-
-    result = module_pow(x, y / 2, m)
-    result = result * result % m
-
-    if y % 2 == 1:
-        result = (result * x) % m
-
-    return result
-
-
-def is_simple(n):
+def is_prime(n):
     """Check if n is prime
     :param n: number > 2
     :type n: int
     :rtype: bool
     """
-    assert n > 2
-    if n % 2 == 0:
+    if n == 2:
+        return True
+
+    if n < 2:
         return False
 
     k = 50
@@ -42,17 +25,17 @@ def is_simple(n):
         s += 1
 
     for _ in xrange(k):
-        a = randint(2, n - 2)
-        x = module_pow(a, t, n)
+        a = randint(2, max(n - 2, 2))
+        x = pow(a, t, n)
 
-        if x == 1 or x == n - 1:
+        if x == 1 or x == (n - 1):
             continue
 
         for _ in xrange(s - 1):
-            x = x * x % n
+            x = pow(x, 2, n)
 
             if x == 1:
-                return False, 1
+                return False
 
             if x == n - 1:
                 break
@@ -60,7 +43,7 @@ def is_simple(n):
         if x == n - 1:
             continue
 
-        return False, 0, x
+        return False
 
     return True
 
@@ -103,7 +86,7 @@ def generate(n, l):
 
         q = 2 ** (n - 1) | 1 | u
 
-        if not is_simple(q):
+        if not is_prime(q):
             continue
 
         counter = 0
@@ -137,13 +120,13 @@ def generate(n, l):
                 else:
                     continue
 
-            if is_simple(p):
+            if is_prime(p):
                 break
 
         if counter > 2 ** 12:
             continue
 
-        if is_simple(p):
+        if is_prime(p):
             break
 
     return q, p
