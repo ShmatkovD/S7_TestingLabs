@@ -59,7 +59,7 @@ def get_hash(number):
     return result
 
 
-def generate(n, l):
+def generate(l):
     """Return 2 simple numbers p and q
     :param n: bits count in p
     :type n: int
@@ -68,23 +68,29 @@ def generate(n, l):
     :return: (p, q)
     :rtype: tuple
     """
+    n = 160
     n_little = (l - 1) / n
     b = (l - 1) % n
     p = 0
     q = 0
+    it = 0
 
     while True:
+        it += 1
 
         # steps 1 - 6
         seed = 0
         seedlen = n + 1
 
-        for i in xrange(seedlen):
-            seed = seed * 2 + randint(0, 1)
+        seed = randint(0, (2 ** seedlen) - 1)
 
-        u = get_hash(seed) ^ get_hash((seed + 1) % 2**seedlen)
+        u = get_hash(seed) ^ get_hash((seed + 1) % (2 ** seedlen))
 
-        q = 2 ** (n - 1) | 1 | u
+        q = ((2 ** (n - 1)) + 1) | u
+        q %= 2 ** n
+        if q < (2 ** (n - 1)):
+            continue
+
 
         if not is_prime(q):
             continue
@@ -98,18 +104,21 @@ def generate(n, l):
 
             for k in xrange(n_little + 1):
                 v.append(
-                    get_hash((seed + offset + k) % 2**seedlen)
+                    get_hash((seed + offset + k) % (2 ** seedlen))
                 )
 
-            w = sum(v[i] * 2**(n * i) for i in xrange(n_little))
-            w += (v[n_little] % b) * 2 ** (n_little * n)
+            w = sum([
+                v[i] * (2 ** (n * i))
+                for i in xrange(n_little)
+            ])
+            w += (v[n_little] % (2 * b)) * (2 ** (n_little * n))
 
-            x = w + 2 ** (l - 1)
+            x = w + (2 ** (l - 1))
 
             c = x % (2 * q)
             p = x - (c - 1)
 
-            if p < 2 ** (l - 1):
+            if p < (2 ** (l - 1)):
                 # steps 13 and 14
 
                 counter += 1
@@ -123,6 +132,15 @@ def generate(n, l):
             if is_prime(p):
                 break
 
+            # step 13 and 14
+            counter += 1
+            offset += n_little + 1
+
+            if counter > 2 ** 12:
+                break
+            else:
+                continue
+
         if counter > 2 ** 12:
             continue
 
@@ -133,4 +151,4 @@ def generate(n, l):
 
 
 if __name__ == '__main__':
-    print generate(20, 32)
+    print generate(1024)

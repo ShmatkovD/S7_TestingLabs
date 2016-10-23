@@ -7,6 +7,49 @@ from random import randint
 KEY_FILE = 'key.txt'
 
 
+def is_prime(n):
+    """Check if n is prime
+    :param n: number > 2
+    :type n: int
+    :rtype: bool
+    """
+    if n == 2:
+        return True
+
+    if n < 2:
+        return False
+
+    k = 50
+
+    s = 0
+    t = n - 1
+    while t % 2 == 0:
+        t /= 2
+        s += 1
+
+    for _ in xrange(k):
+        a = randint(2, max(n - 2, 2))
+        x = pow(a, t, n)
+
+        if x == 1 or x == (n - 1):
+            continue
+
+        for _ in xrange(s - 1):
+            x = pow(x, 2, n)
+
+            if x == 1:
+                return False
+
+            if x == n - 1:
+                break
+
+        if x == n - 1:
+            continue
+
+        return False
+
+    return True
+
 def read_key():
     with open(KEY_FILE, 'r') as f:
         key = int(f.readline(), base=16)
@@ -20,8 +63,7 @@ def find_simple(number):
     :rtype: int
     """
     number += 1
-    is_simple = lambda x: any([x % i for i in xrange(2, int(x**0.5) + 1)])
-    while not is_simple(number):
+    while not is_prime(number):
         number += 1
 
     return number
