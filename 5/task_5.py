@@ -171,6 +171,9 @@ def decode(parts):
         f.write(hex(secret))
 
 
+
+### MAIN
+
 if __name__ == '__main__':
     key = read_key()
     n = 4
