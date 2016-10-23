@@ -50,6 +50,7 @@ def is_prime(n):
 
     return True
 
+
 def read_key():
     with open(KEY_FILE, 'r') as f:
         key = int(f.readline(), base=16)
@@ -137,30 +138,17 @@ def encode(n, m, key):
 
 ### DECODE
 
+def get_gcd(a, b):
+    if a == 0:
+        return b, 0, 1
+    d, x1, y1 = get_gcd(b % a, a)
+    x = y1 - (b / a) * x1
+    y = x1
 
-def euler(number):
-    """Return value of Euler's function for number
-    :type number: int
-    :rtype: int
-    """
-    values = collections.defaultdict(lambda: 0)
-
-    for i in xrange(2, int(number ** 0.5) + 1):
-        while number % i == 0:
-            values[i] += 1
-            number /= i
-
-    values[number] += 1
-    values.pop(1, 0)
-
-    result = 1
-    for divisor, count in values.items():
-        result *= (divisor - 1) * (divisor ** (count - 1))
-
-    return result
+    return d, x, y
 
 
-def get_upgraded_secret(a, p):
+def get_upgraded_secret(r, m):
     """Return X according to chinese remainder theorem.
     :param a: remainders
     :type a: list
@@ -168,37 +156,23 @@ def get_upgraded_secret(a, p):
     :type p: list
     :rtype: int
     """
-    assert len(a) == len(p)
-    k = len(p)
+    assert len(r) == len(m)
 
-    x = [0 for _ in a]
-    r = [
-        [0 for _ in xrange(k)]
-        for _ in xrange(k)
-    ]
+    mm = 1
+    for item in m:
+        mm *= item
 
-    for i in xrange(k - 1):
-        for j in xrange(i + 1, k):
-            eu = euler(p[j]) - 1
-            r[i][j] = eu
+    x = 0
 
-    for i in xrange(k):
-        x[i] = a[i]
-        for j in xrange(i):
-            x[i] = r[j][i] * (x[i] - x[j])
+    for i, mi in enumerate(m):
+        yi = mm / mi
+        gcd, reversed_y, _ = get_gcd(yi, mi)
+        si = reversed_y % mi
 
-            x[i] = x[i] % p[i]
-            if (x[i] < 0): x[i] += p[i]
+        ci = (r[i] * si) % mi
+        x = (x + ci * yi) % mm
 
-    ans = 0
-    for i in xrange(k):
-        mult = x[i]
-        for j in xrange(i):
-            mult *= p[j]
-
-        ans += mult
-
-    return ans
+    return x
 
 
 def decode(parts):
@@ -210,7 +184,7 @@ def decode(parts):
     secret = upgraded_secret % parts[0][0]
 
     with open('out.txt', 'w') as f:
-        f.write(hex(secret))
+        f.write(hex(secret)[2:])
 
 
 
@@ -218,8 +192,8 @@ def decode(parts):
 
 if __name__ == '__main__':
     key = read_key()
-    n = 4
-    m = 3
+    n = 7
+    m = 6
     parts = encode(n, m, key)
 
     with open('parts.txt', 'w') as f:
